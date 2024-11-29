@@ -1,0 +1,85 @@
+﻿@model SqlTestApp.Models.Employee
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+ <form id="employeeForm" method="post" enctype="multipart/form-data" asp-controller="Employee" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label style="color:darkgreen" id="lblMessage"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input id="firstName" asp-for="FirstName" class="form-control" value="Employee Name"/>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input id="lastName" asp-for="LastName" class="form-control" value="Employee Last Name" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label"></label>
+                <input id="age" asp-for="Age" class="form-control" value="5" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input id="address" asp-for="Address" class="form-control" value="Employee full address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Position" class="control-label"></label>
+                <input id="position" asp-for="Position" class="form-control" value="Backend Developer" />
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="addEmployeeBtn" type="button" value="Create" onclick="AjaxFormSubmit()" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        function AjaxFormSubmit() {
+            $("#lblMessage").html("Loading...")
+            //Set the URL.
+            var url = $("#employeeForm").attr("action");
+
+            //Add the Field values to FormData object.
+            var formData = new FormData();
+            formData.append("firstName", $("#firstName").val());
+            formData.append("lastName", $("#lastName").val());
+            formData.append("age", $("#age").val());
+            formData.append("address", $("#address").val());
+            formData.append("position", $("#position").val());
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    $("#lblMessage").html("Employee added successfully!")
+                }
+            });
+        }
+
+    </script>
+
+}
